@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="db-forest-configuration">
+    <data version="2">.
+	1:0:54a18733-8dd8-4cce-a86d-ece157839884:Covr
+	2:1:8fd6352a-8f77-4680-84bf-85923264deb3:Sandbox
+	4:1:35bb152d-ae11-4325-880e-afff97a4770b:Production
+	7:1:f2b4777a-91ed-479d-8676-bd39eed93900:Development
+	9:1:e0f9d9e5-037a-4587-9713-76a4bac57f96:QA
+	11:1:1fc6b6ac-c83f-4417-887d-94a673a5ec61:UAT
+	----------------------------------------
+	3:2:44dc3d0e-e007-44d3-8f49-9fb3539db19a
+	5:4:9afff9e0-cc81-4786-a66e-230c16a4cd8a
+	6:4:b8c59752-bc97-4bc0-86fc-0cf41d55469c
+	8:7:773651ed-4928-4bf9-b6f0-3604f3aff9c3
+	10:9:16deddc3-6ad4-4245-a8cd-d5e7969e9992
+	12:11:e4579608-41f0-4427-9b79-838dca74f787
+		.</data>
+  </component>
+</project>

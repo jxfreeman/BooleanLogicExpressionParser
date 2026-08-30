@@ -8,7 +8,7 @@ namespace BooleanLogicParser
     public class Tokenizer
     {
         private readonly StringReader _reader;
-        private string _text;
+        private readonly string _text;
 
         public Tokenizer(string text)
         {
@@ -21,7 +21,7 @@ namespace BooleanLogicParser
             var tokens = new List<Token>();
             while (_reader.Peek() != -1)
             {
-                while (Char.IsWhiteSpace((char) _reader.Peek()))
+                while (char.IsWhiteSpace((char) _reader.Peek()))
                 {
                     _reader.Read();
                 }
@@ -45,7 +45,7 @@ namespace BooleanLogicParser
                         _reader.Read();
                         break;
                     default:
-                        if (Char.IsLetter(c))
+                        if (char.IsLetter(c))
                         {
                             var token = ParseKeyword();
                             tokens.Add(token);
@@ -53,7 +53,7 @@ namespace BooleanLogicParser
                         else
                         {
                             var remainingText = _reader.ReadToEnd() ?? string.Empty;
-                            throw new Exception(string.Format("Unknown grammar found at position {0} : '{1}'", _text.Length - remainingText.Length, remainingText));
+                            throw new Exception($"Unknown grammar found at position {_text.Length - remainingText.Length} : '{remainingText}'");
                         }
                         break;
                 }
@@ -64,26 +64,21 @@ namespace BooleanLogicParser
         private Token ParseKeyword()
         {
             var text = new StringBuilder();
-            while (Char.IsLetter((char) _reader.Peek()))
+            while (char.IsLetter((char) _reader.Peek()))
             {
                 text.Append((char) _reader.Read());
             }
 
             var potentialKeyword = text.ToString().ToLower();
 
-            switch (potentialKeyword)
+            return potentialKeyword switch
             {
-                case "true":
-                    return new TrueToken();
-                case "false":
-                    return new FalseToken();
-                case "and":
-                    return new AndToken();
-                case "or":
-                    return new OrToken();
-                default:
-                    throw new Exception("Expected keyword (True, False, And, Or) but found "+ potentialKeyword);
-            }
+                "true" => new TrueToken(),
+                "false" => new FalseToken(),
+                "and" => new AndToken(),
+                "or" => new OrToken(),
+                _ => throw new Exception("Expected keyword (True, False, And, Or) but found " + potentialKeyword)
+            };
         }
     }
 }

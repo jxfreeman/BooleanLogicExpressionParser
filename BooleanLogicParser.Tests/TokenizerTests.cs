@@ -16,24 +16,30 @@ namespace BooleanLogicParser.Tests
         [TestCase("!", ExpectedResult = typeof(NegationToken))]
         [TestCase("(", ExpectedResult = typeof(OpenParenthesisToken))]
         [TestCase(")", ExpectedResult = typeof(ClosedParenthesisToken))]
-        [TestCase("a", ExpectedException = typeof(Exception))]
-        [TestCase("(trae)", ExpectedException = typeof(Exception))]
         public Type CanParseSingleToken(string expression)
         {
             var tokens = new Tokenizer(expression).Tokenize();
             return (tokens.First().GetType());
         }
 
+        [TestCase("a")]
+        [TestCase("(trae)")]
+        public void ThrowsForInvalidToken(string expression)
+        {
+            Assert.That(() => new Tokenizer(expression).Tokenize().ToList(), Throws.InstanceOf<Exception>());
+        }
+
+        [Test]
         public void CanParseComplexTokenStructure()
         {
             var tokens = new Tokenizer("!(True And False)").Tokenize();
             var list = tokens.ToList();
-            Assert.IsTrue(list[0] is NegationToken);
-            Assert.IsTrue(list[1] is OpenParenthesisToken);
-            Assert.IsTrue(list[2] is TrueToken);
-            Assert.IsTrue(list[3] is AndToken);
-            Assert.IsTrue(list[4] is FalseToken);
-            Assert.IsTrue(list[5] is ClosedParenthesisToken);
+            Assert.That(list[0], Is.TypeOf<NegationToken>());
+            Assert.That(list[1], Is.TypeOf<OpenParenthesisToken>());
+            Assert.That(list[2], Is.TypeOf<TrueToken>());
+            Assert.That(list[3], Is.TypeOf<AndToken>());
+            Assert.That(list[4], Is.TypeOf<FalseToken>());
+            Assert.That(list[5], Is.TypeOf<ClosedParenthesisToken>());
         }
     }
 }

@@ -7,11 +7,6 @@ namespace BooleanLogicParser.Tests
     public class ParserTests
     {
         [TestCase("true", ExpectedResult = true)]
-        [TestCase(")", ExpectedException = (typeof(Exception)))]
-        [TestCase("az", ExpectedException = (typeof(Exception)))]
-        [TestCase("", ExpectedException = (typeof(Exception)))]
-        [TestCase("()", ExpectedException = typeof(Exception))]
-        [TestCase("true and", ExpectedException = typeof(Exception))]
         [TestCase("false", ExpectedResult = false)]
         [TestCase("true ", ExpectedResult = true)]
         [TestCase("false ", ExpectedResult = false)]
@@ -27,7 +22,6 @@ namespace BooleanLogicParser.Tests
         [TestCase("true and true", ExpectedResult = true)]
         [TestCase("!true", ExpectedResult = false)]
         [TestCase("!(true)", ExpectedResult = false)]
-        [TestCase("!(true", ExpectedException = typeof(Exception))]
         [TestCase("!(!(true))", ExpectedResult = true)]
         [TestCase("!false", ExpectedResult = true)]
         [TestCase("!(false)", ExpectedResult = true)]
@@ -41,6 +35,22 @@ namespace BooleanLogicParser.Tests
             var tokens = new Tokenizer(expression).Tokenize();
             var parser = new Parser(tokens);
             return parser.Parse();
+        }
+
+        [TestCase(")")]
+        [TestCase("az")]
+        [TestCase("")]
+        [TestCase("()")]
+        [TestCase("true and")]
+        [TestCase("!(true")]
+        public void ThrowsForInvalidExpression(string expression)
+        {
+            Assert.That(() =>
+            {
+                var tokens = new Tokenizer(expression).Tokenize();
+                var parser = new Parser(tokens);
+                parser.Parse();
+            }, Throws.InstanceOf<Exception>());
         }
     }
 }

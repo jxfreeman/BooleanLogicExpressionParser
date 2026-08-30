@@ -53,35 +53,37 @@ namespace BooleanLogicParser
 
         private bool ParseBoolean()
         {
-            if (_tokens.Current is BooleanValueToken)
+            switch (_tokens.Current)
             {
-                var current = _tokens.Current;
-                _tokens.MoveNext();
+                case BooleanValueToken:
+                {
+                    var current = _tokens.Current;
+                    _tokens.MoveNext();
 
-                if (current is TrueToken)
-                    return true;
+                    return current is TrueToken;
+                }
+                case OpenParenthesisToken:
+                {
+                    _tokens.MoveNext();
 
-                return false;
-            }
-            if (_tokens.Current is OpenParenthesisToken)
-            {
-                _tokens.MoveNext();
+                    var expInPars = Parse();
 
-                var expInPars = Parse();
-
-                if (!(_tokens.Current is ClosedParenthesisToken))
-                    throw new Exception("Expecting Closing Parenthesis");
+                    if (_tokens.Current is not ClosedParenthesisToken)
+                        throw new Exception("Expecting Closing Parenthesis");
                     
-                _tokens.MoveNext(); 
+                    _tokens.MoveNext(); 
 
-                return expInPars;
+                    return expInPars;
+                }
+                case ClosedParenthesisToken:
+                    throw new Exception("Unexpected Closed Parenthesis");
+                default:
+                {
+                    // since it's not a BooleanConstant or Expression in parentheses, it must be an expression again
+                    var val = Parse();
+                    return val;
+                }
             }
-            if (_tokens.Current is ClosedParenthesisToken)
-                throw new Exception("Unexpected Closed Parenthesis");
-
-            // since its not a BooleanConstant or Expression in parenthesis, it must be a expression again
-            var val = Parse();
-            return val;
         }
     }
 }
